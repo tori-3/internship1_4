@@ -239,9 +239,6 @@ void List<DataType>::sort(std::function<bool(const DataType&, const DataType&)>c
 }
 
 
-//À‘•‚ÌQl‚É‚µ‚Ü‚µ‚½
-//https://teratail.com/questions/307820
-
 template<typename DataType>
 std::pair<typename List<DataType>::Node*, typename List<DataType>::Node*> List<DataType>::quickSort(List<DataType>::Node* leftNode, List<DataType>::Node* rightNode, std::function<bool(const DataType&, const DataType&)>compare)
 {

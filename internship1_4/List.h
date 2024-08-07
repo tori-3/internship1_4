@@ -121,13 +121,21 @@ public:
     ///@param addData 追加するデータ
     void add(const DataType& addData);
 
+    ///@brief クイックソートをします。
+    ///@param compare どのように要素を比較するかを指定します。
+    ///@sa 実装の参考にしました https://teratail.com/questions/307820
+    ///@return 戻り値の説明
     void sort(std::function<bool(const DataType&, const DataType&)>compare = [](const DataType& left, const DataType& right) {return left < right; });
 
 
 private:
 
-
-    std::pair<Node*, Node*> quickSort(Node* beginNode, Node* lastNode, std::function<bool(const DataType&, const DataType&)>compare);
+    ///@brief クイックソートをします。
+    ///@param compare どのように要素を比較するかを指定します。
+    ///@param leftNode 左端のノード
+    ///@param rightNode 右端のノード
+    ///@return 左端のNodeと右端のNodeを返します。
+    std::pair<Node*, Node*> quickSort(Node* leftNode, Node* rightNode, std::function<bool(const DataType&, const DataType&)>compare);
 
     //! 番兵のポインタ
     Node* m_sentinel;
