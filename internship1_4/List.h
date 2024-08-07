@@ -129,7 +129,7 @@ public:
 
 private:
 
-    ///@brief クイックソートをします。
+    ///@brief クイックソートをします。(sortの内部で使います)
     ///@param compare どのように要素を比較するかを指定します。
     ///@param leftNode 左端のノード
     ///@param rightNode 右端のノード
