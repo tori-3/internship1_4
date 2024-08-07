@@ -124,7 +124,6 @@ public:
     ///@brief クイックソートをします。
     ///@param compare どのように要素を比較するかを指定します。
     ///@sa 実装の参考にしました https://teratail.com/questions/307820
-    ///@return 戻り値の説明
     void sort(std::function<bool(const DataType&, const DataType&)>compare = [](const DataType& left, const DataType& right) {return left < right; });
 
 
