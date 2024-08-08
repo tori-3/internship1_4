@@ -222,74 +222,79 @@ void List<DataType>::add(const DataType& addData)
 }
 
 template<typename DataType>
-void List<DataType>::sort(std::function<bool(const DataType&, const DataType&)>compare)
+void List<DataType>::sort(CompareFunc compare)
 {
     if (m_size <= 1 || compare==nullptr)
     {
         return;
     }
+    auto it = end();
+    --it;
 
-    auto ans=quickSort(m_sentinel->back, m_sentinel->front, compare);
-
-    m_sentinel->back = ans.first;
-    ans.first->front = m_sentinel;
-
-    ans.second->back = m_sentinel;
-    m_sentinel->front = ans.second;
+    quickSort(begin(), it, compare);
 }
 
-
 template<typename DataType>
-std::pair<typename List<DataType>::Node*, typename List<DataType>::Node*> List<DataType>::quickSort(List<DataType>::Node* leftNode, List<DataType>::Node* rightNode, std::function<bool(const DataType&, const DataType&)>compare)
+void List<DataType>::quickSort(Iterator leftIt, Iterator rightIt, CompareFunc compare)
 {
-    if (leftNode == rightNode)
+
+    // 左端を基準にする
+    DataType pivot = *leftIt;
+
+    auto left = leftIt;
+    auto right = rightIt;
+
+    while (1) 
     {
-        return { leftNode,rightNode };
-    }
-
-    DataType pivot = leftNode->data;
-
-    Node* resultLeft = leftNode;
-    Node* resultRight = leftNode;
-
-    Node sentinelLeft;
-    Node sentinelRight;
-
-    Node* left = &sentinelLeft;
-    Node* right = &sentinelRight;
-
-    rightNode->back = nullptr;
-    for (Node* node = leftNode->back; node ; node = node->back)
-    {
-        if (compare(node->data , pivot))
+        // 基準以上の値を見つけるまで右に移動
+        while (compare(*left, pivot))
         {
-            left->back = node;
-            node->front = left;
-            left = node;
+            ++left;
         }
-        else
+
+        // 基準以下の値を見つけるまで左に移動
+        while (compare(pivot, *right))
         {
-            right->back = node;
-            node->front = node;
-            right = node;
+            --right;
+        }
+
+        // 左右がが逆になるか、同じになったらルールを抜ける 
+        if (right == left || right.m_element->back == left.m_element)
+        {
+            break;
+        }
+
+        //値を交換
+        auto temp = *left;
+        *left = *right;
+        *right = temp;
+
+        // 次の値に移動
+        ++left;
+        --right;
+    }
+
+    //もし左端(=要素が0個)ではなければ
+    if (leftIt != left)
+    {
+        --left;
+        //もし左端(=要素が1個)ではなければ
+        if (leftIt!=left)
+        {
+            //左のデータ群を対象としてクイックソートを再帰
+            quickSort(leftIt, left, compare);
         }
     }
 
-    if(sentinelLeft.back)
-    {
-        auto result = quickSort(sentinelLeft.back, left, compare);
-        resultLeft = result.first;
-        result.second->back=resultRight;
-        resultRight->front = result.second;
-    }
-
-    if (sentinelRight.back)
-    {
-        auto result = quickSort(sentinelRight.back, right, compare);
-        resultRight->back = result.first;
-        result.first->front= resultRight;
-        resultRight = result.second;
-    }
-
-    return { resultLeft,resultRight };
+    //もし右端(=要素が0個)ではなければ
+    //if (right != rightIt) 
+    //{
+        ++right;
+        //もし右端(=要素が1個)ではなければ
+        if (right != rightIt)
+        {
+            //右のデータ群を対象としてクイックソートを再帰
+            quickSort(right, rightIt, compare);
+        }
+    //}
 }

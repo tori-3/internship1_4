@@ -3,7 +3,11 @@
 #include <cassert>
 #include <functional>
 
+#include<iostream>
+
+
 ///@brief 双方向リストのクラスです。
+///@tparam DataType リストに格納するデータの型です。
 template<typename DataType>
 class List
 {
@@ -70,7 +74,7 @@ public:
         DataType& operator *();
     };
 
-    
+    using CompareFunc = std::function<bool(const DataType&, const DataType&)>;
 
     ///@brief Listのコンストラクタです。
     List();
@@ -123,9 +127,8 @@ public:
 
     ///@brief クイックソートをします。
     ///@param compare どのように要素を比較するかを指定します。
-    ///@sa 実装の参考にしました https://teratail.com/questions/307820
-    void sort(std::function<bool(const DataType&, const DataType&)>compare = [](const DataType& left, const DataType& right) {return left < right; });
-
+    ///@sa 実装の参考にしました https://webpia.jp/quick_sort/
+    void sort(CompareFunc compare = [](const DataType& left, const DataType& right) {return left < right; });
 
 private:
 
@@ -134,7 +137,7 @@ private:
     ///@param leftNode 左端のノード
     ///@param rightNode 右端のノード
     ///@return 左端のNodeと右端のNodeを返します。
-    std::pair<Node*, Node*> quickSort(Node* leftNode, Node* rightNode, std::function<bool(const DataType&, const DataType&)>compare);
+    void quickSort(Iterator leftIt, Iterator rightIt, CompareFunc compare);
 
     //! 番兵のポインタ
     Node* m_sentinel;

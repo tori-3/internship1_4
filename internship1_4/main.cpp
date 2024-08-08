@@ -5,9 +5,16 @@
 #include<fstream>
 #include<sstream> 
 
+void PrintGrades(const List<Grades>&list) 
+{
+    for (auto grades :list)
+    {
+        std::cout << grades.score << "\t" << grades.name << std::endl;
+    }
+}
+
 int main()
 {
-    //テストコード
     List<Grades> list;
 
     std::ifstream file;
@@ -34,16 +41,10 @@ int main()
     list.sort([](const Grades& left, const Grades& right) {return left.score < right.score; });
 
     std::cout << "-----スコアで並び替え-----" << std::endl;
-    for (auto it = list.constBegin(); it != list.constEnd(); ++it)
-    {
-        std::cout << (*it).score << "\t" << (*it).name << std::endl;
-    }
+    PrintGrades(list);
 
     list.sort([](const Grades& left, const Grades& right) {return left.name < right.name; });
 
     std::cout << "-----名前で並び替え-----" << std::endl;
-    for (auto it = list.constBegin(); it != list.constEnd(); ++it)
-    {
-        std::cout << (*it).score << "\t" << (*it).name << std::endl;
-    }
+    PrintGrades(list);
 }
