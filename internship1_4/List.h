@@ -133,10 +133,9 @@ public:
 private:
 
     ///@brief クイックソートをします。(sortの内部で使います)
+    ///@param leftIt 左端のイテレーター
+    ///@param rightIt 右端のイテレーター
     ///@param compare どのように要素を比較するかを指定します。
-    ///@param leftNode 左端のノード
-    ///@param rightNode 右端のノード
-    ///@return 左端のNodeと右端のNodeを返します。
     void quickSort(Iterator leftIt, Iterator rightIt, CompareFunc compare);
 
     //! 番兵のポインタ
