@@ -1,4 +1,6 @@
 # pragma once
+#include <cassert>
+
 
 template<typename DataType>
 List<DataType>::ConstIterator::ConstIterator(List<DataType>::Node* ptr, const List<DataType>* parent)
@@ -12,7 +14,7 @@ List<DataType>::ConstIterator::ConstIterator(const List<DataType>::ConstIterator
 
 
 template<typename DataType>
-typename List<DataType>::ConstIterator List<DataType>::ConstIterator:: operator =(const List<DataType>::ConstIterator& iterator)
+typename List<DataType>::ConstIterator& List<DataType>::ConstIterator:: operator =(const List<DataType>::ConstIterator& iterator)
 {
     m_element = iterator.m_element;
     m_parent = iterator.m_parent;
@@ -81,13 +83,13 @@ typename List<DataType>::ConstIterator List<DataType>::ConstIterator::operator +
 }
 
 template<typename DataType>
-bool List<DataType>::ConstIterator::operator !=(ConstIterator right)const
+bool List<DataType>::ConstIterator::operator !=(const ConstIterator& right)const
 {
     return m_element != right.m_element;
 }
 
 template<typename DataType>
-bool List<DataType>::ConstIterator::operator ==(ConstIterator right)const
+bool List<DataType>::ConstIterator::operator ==(const ConstIterator& right)const
 {
     return m_element == right.m_element;
 }
@@ -265,9 +267,9 @@ void List<DataType>::quickSort(Iterator leftIt, Iterator rightIt, CompareFunc co
         }
 
         //’l‚ðŒðŠ·
-        auto temp = *left;
-        *left = *right;
-        *right = temp;
+        auto temp = std::move(*left);
+        *left = std::move(*right);
+        *right = std::move(temp);
 
         // ŽŸ‚Ì’l‚ÉˆÚ“®
         ++left;

@@ -1,9 +1,8 @@
-#include"Grades.h"
-#include"List.h"
 #include<iostream>
-#include<string>
 #include<fstream>
 #include<sstream> 
+#include"Grades.h"
+#include"List.h"
 
 void PrintGrades(const List<Grades>&list) 
 {
@@ -15,6 +14,7 @@ void PrintGrades(const List<Grades>&list)
 
 int main()
 {
+
     List<Grades> list;
 
     std::ifstream file;

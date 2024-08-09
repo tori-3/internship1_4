@@ -1,10 +1,5 @@
 #pragma once
-#include<string>
-#include <cassert>
 #include <functional>
-
-#include<iostream>
-
 
 ///@brief 双方向リストのクラスです。
 ///@tparam DataType リストに格納するデータの型です。
@@ -32,27 +27,58 @@ public:
     {
     public:
 
+        ///@brief イテレーターを作成します。
         ConstIterator() = default;
 
+        ///@brief イテレーターを作成します。
+        ///@param ptr イテレーターが指すノードのポインタ
+        ///@param parent ノードが所属するリストのポインタ
         ConstIterator(Node* ptr, const List* parent);
 
+        ///@brief イテレーターを作成します。
+        ///@param iterator コピー元のイテレーター
         ConstIterator(const ConstIterator& iterator);
 
-        ConstIterator operator =(const ConstIterator& iterator);
+        ///@brief 別のイテレーターを代入します。
+        ///@param iterator 代入するイテレーター
+        ///@return イテレーター自身を返します
+        ConstIterator& operator =(const ConstIterator& iterator);
 
+        ///@brief イテレーターが指すデータを返します。
+        ///@return イテレーターが指すデータを返します。
+        ///@detail 何も参照していないイテレーターや末尾イテレーターに対して呼び出した時の動作は未定義
+        ///        値の変更は不可能
         const DataType& operator *()const;
 
+        ///@brief 一つ前の要素に戻ります。
+        ///@return イテレーター自身
+        ///@detail 何も参照していないイテレーターや先頭イテレーターに対して呼び出した時の動作は未定義
         ConstIterator& operator --();
 
+        ///@brief 次の要素に行きます。
+        ///@return イテレーター自身
+        ///@detail 何も参照していないイテレーターや末尾イテレーターに対して呼び出した時の動作は未定義
         ConstIterator& operator ++();
 
+        ///@brief 一つ前の要素に戻ります。
+        ///@return 一つ前に戻る前のイテレーター
+        ///@detail 何も参照していないイテレーターや先頭イテレーターに対して呼び出した時の動作は未定義
         ConstIterator operator --(int);
 
+        ///@brief 次の要素に行きます。
+        ///@return 次の要素に行く前のイテレーター
+        ///@detail 何も参照していないイテレーターや末尾イテレーターに対して呼び出した時の動作は未定義
         ConstIterator operator ++(int);
 
-        bool operator !=(ConstIterator right)const;
+        ///@brief イテレーター同士が異なっているか調べます。
+        ///@param right 比較するイテレーター
+        ///@return イテレーター同士が異なっていればtrue 等しければfalseを返します。
+        bool operator !=(const ConstIterator& right)const;
 
-        bool operator ==(ConstIterator right)const;
+        ///@brief イテレーター同士が等しいか調べます。
+        ///@param right 比較するイテレーター
+        ///@return イテレーター同士が等しければtrue 異なっていればfalseを返します。
+        bool operator ==(const ConstIterator& right)const;
 
     protected:
 
@@ -71,9 +97,16 @@ public:
     public:
         using ConstIterator::ConstIterator;
 
+        ///@brief イテレーターが指すデータを返します。
+        ///@return イテレーターが指すデータを返します。
+        ///@detail 何も参照していないイテレーターや末尾イテレーターに対して呼び出した時の動作は未定義
+        ///        値の変更は可能
         DataType& operator *();
     };
 
+    ///@brief ソートに用いる左右の値を比較する関数の型です。
+    ///@return 昇順で並び替えたいときは右の方が大きいときにtrue そうでないときにfalseを返す
+    ///        降順で並び替えたいときは左の方が大きいときにtrue そうでないときにfalseを返す
     using CompareFunc = std::function<bool(const DataType&, const DataType&)>;
 
     ///@brief Listのコンストラクタです。
@@ -114,11 +147,13 @@ public:
     ///@param iterator 追加する位置のイテレーター
     ///@param addData 追加するデータ
     ///@return 追加に成功したらtrue 失敗したらfalse
+    ///@detail 参照の無いイテレーターや別のリストのイテレーターを渡すと失敗します。
     bool insert(ConstIterator iterator, const DataType& addData);
 
     ///@brief リストの要素を削除します。
     ///@param iterator 削除する位置のイテレーター
     ///@return 削除に成功したらtrue 失敗したらfalse
+    ///@detail 参照の無いイテレーターや別のリストのイテレーター、末尾イテレーターを渡すと失敗します。
     bool remove(ConstIterator iterator);
 
     ///@brief リストの末尾に要素を追加します。
